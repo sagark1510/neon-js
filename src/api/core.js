@@ -126,6 +126,34 @@ export const doInvoke = config => {
     })
 }
 
+export const doInvokeString = config => {
+  return fillUrl(config)
+    .then(fillKeys)
+    .then(fillBalance)
+    .then(c => createTx(c, 'invocation'))
+    .then(c => addAttributesIfExecutingAsSmartContract(c))
+    .then(c => addAttributesForMintToken(c))
+    .then(attachAttributesForEmptyTransaction)
+    .then(c => signTx(c))
+    .then(c => attachInvokedContractForMintToken(c))
+    .then(c => attachContractIfExecutingAsSmartContract(c))
+    .then(c => c.tx)
+    .catch(err => {
+      const dump = {
+        net: config.net,
+        address: config.address,
+        intents: config.intents,
+        balance: config.balance,
+        tx: config.tx,
+        script: config.script,
+        gas: config.gas,
+        fees: config.fees,
+      };
+      log.error(`doInvoke failed with ${err.message}. Dumping config`, dump);
+      throw err;
+    });
+};
+
 /**
  * Retrieves RPC endpoint URL of best available node
  * @param {object} config

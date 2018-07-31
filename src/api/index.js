@@ -37,9 +37,10 @@ export default {
     claimAllGas: neonDB.doClaimAllGas,
     mintTokens: neonDB.doMintTokens
   },
-  sendAsset: (config) => core.sendAsset(config),
-  claimGas: (config) => core.claimGas(config),
-  doInvoke: (config) => core.doInvoke(config)
+  sendAsset: config => core.sendAsset(config),
+  claimGas: config => core.claimGas(config),
+  doInvoke: config => core.doInvoke(config),
+  doInvokeString: config => core.doInvokeString(config)
 }
 
 export * from './core'
